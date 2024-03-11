@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,700&amp;subset=cyrillic"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&amp;subset=cyrillic"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,700&amp;subset=cyrillic"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i|Tinos:400,400i&amp;subset=cyrillic"
+      rel="stylesheet"
+    />
+    <script
+      type="text/javascript"
+      src="/shared/3rdparty/jquery/jquery.js"
+      language="javascript1.1"
+    ></script>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body,
+      html {
+        height: 100%;
+      }
+      body {
+        background-color: #ffffff;
+        color: #ffffff;
+      }
+      h1 {
+        font-family: 'Playfair Display';
+        font-size: 30px;
+        padding: 10px 0px;
+        margin: 0px;
+		color: #000;
+      }
+      .field-box {
+        border: 2px solid #d0d0d0;
+        float: left;
+      }
+      .field {
+        position: relative;
+        width: 1024px;
+        height: 640px;
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .tile_conteiner {
+        height: 35.55 * 24px;
+      }
+	  .tilee{
+		position: relative;
+        width: 1024px;
+        height: 640px;
+        display: flex;
+        flex-wrap: wrap;
+	  }
+      .tilee .tile {
+        display: flex;
+        width: 25.5px;
+        height: 26px;
+        background-size: 100%;
+        background-image: url(images/tile-.png);
+        z-index: 5;
+      }
+      .tilee .tileW {
+        width: 25.5px;
+		height: 26px;
+        background-image: url(images/tile-W.png);
+      }
+      .tilee .tileE {
+		transition: 0.2s all;
+        background-image: url(images/tile-E.png);
+		top: 0;
+		left: 0;
+        z-index: 10;
+		width:25.5px;
+		height: 26px;
+		background-size: cover;
+		position: absolute;
+      }
+      .tilee .tileP {
+		transition: 0.2s all;
+        background-image: url(images/tile-P.png);
+        z-index: 10;
+		width: 25.5px;
+		height: 26px;
+		background-size: cover;
+		position: absolute;
+      }
+      .tilee .tileHP {
+		transition: 0.2s all;
+		position: absolute;
+        background-image: url(images/tile-HP.png);
+        z-index: 9;
+		width: 25.5px;
+		height: 26px;
+		top: 0;
+		left: 25.5px;
+		background-size: cover;
+      }
+      .tilee .tileSW {
+		transition: 0.2s all;
+		background-size: cover;
+		position: absolute;
+        background-image: url(images/tile-SW.png);
+        z-index: 9;
+		width: 25.5px;
+		height: 26px;
+      }
+      .tilee .tileE .health {
+        background-color: #ff0000;
+		transition: all 0.3s ease-in-out;
+        z-index: 11;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        height: 5px;
+		width: 27px;
+      }
+
+      .tilee .tileP .health {
+        background-color: rgb(18, 231, 48);
+        transition: all 0.3s ease-in-out;
+        z-index: 11;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        height: 5px;
+      }
+      .inventory-box {
+		font-size: 20px;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+        border: 2px solid #d0d0d0;
+        float: left;
+      }
+	  .inventory-box-img{
+		background-size: cover;
+        background-image: url(images/tile-SW.png);
+		width: 40px;
+		height: 40px;
+
+	  }
+      .inventory {
+		color: #000;
+        position: relative;
+        width: 800px;
+        height: 32px;
+      }
+      .cl {
+        clear: both;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Игровое поле</h1>
+    <div class="field-box">
+      <div class="field">
+		<div class="tilee">
+			<!-- Противники -->
+		 <div class="tileE" id="tileE1">
+			<div class="health" id="health_tileE1"></div>
+		 </div>
+		 <div class="tileE" id="tileE2">
+			<div class="health" id="health_tileE2"></div>
+		 </div>
+		 <div class="tileE" id="tileE3">
+			<div class="health" id="health_tileE3"></div>
+		 </div>
+		 <div class="tileE" id="tileE4">
+			<div class="health" id="health_tileE4"></div>
+		 </div>
+		 <div class="tileE" id="tileE5">
+			<div class="health" id="health_tileE5"></div>
+		 </div>
+		 <div class="tileE" id="tileE6">
+			<div class="health" id="health_tileE6"></div>
+		 </div>
+		 <div class="tileE" id="tileE7">
+			<div class="health" id="health_tileE7"></div>
+		 </div>
+		 <div class="tileE" id="tileE8">
+			<div class="health" id="health_tileE8"></div>
+		 </div>
+		 <div class="tileE" id="tileE9">
+			<div class="health" id="health_tileE9"></div>
+		 </div>
+		 <div class="tileE" id="tileE10">
+			<div class="health" id="health_tileE10"></div>
+		 </div>
+		 <!-- Зелья -->
+		 <div class="tileHP" id="tileHP1"></div>
+		 <div class="tileHP" id="tileHP2"></div>
+		 <div class="tileHP" id="tileHP3"></div>
+		 <div class="tileHP" id="tileHP4"></div>
+		 <div class="tileHP" id="tileHP5"></div>
+		 <div class="tileHP" id="tileHP6"></div>
+		 <div class="tileHP" id="tileHP7"></div>
+		 <div class="tileHP" id="tileHP8"></div>
+		 <div class="tileHP" id="tileHP9"></div>
+		 <div class="tileHP" id="tileHP10"></div>
+		  <!-- Мечи -->
+		  <div class="tileSW" id="tileSW1"></div>
+		  <div class="tileSW" id="tileSW2"></div>
+		  <!-- Герой -->
+		  <div class="tileP">
+			<div class="health" id="health"></div>
+		  </div>
+		  <!-- Поле -->
+		  <!-- 1 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+		   </div>
+		  <!-- 2 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+		  </div>
+		  <!-- 3 -->
+		  <div class="tile_conteiner">
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+		  </div>
+		  <!-- 4 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+		  </div>
+		  <!-- 5 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+		  </div>
+		  <!-- 6 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+		  </div>
+		  <!-- 7 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+		  </div>
+		  <!-- 8 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+		  </div>
+		  <!-- 9 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+		  </div>
+		  <!-- 10 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+		  </div>
+		  <!-- 11 -->
+		  <div class="tile_conteiner">
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+		  </div>
+		  <!-- 12 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+		  </div>
+		  <!-- 13 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+		  </div>
+		  <!-- 14 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+		  </div>
+		  <!-- 15 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+		  </div>
+		  <!-- 16 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+		  </div>
+		  <!-- 17 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+		  </div>
+		  <!-- 18 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+		  </div>
+		  <!-- 19 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+		  </div>
+		  <!-- 20 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+		  </div>
+		  <!-- 21 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+		  </div>
+		  <!-- 22 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+		  </div>
+		  <!-- 23 -->
+		  <div class="tile_conteiner">
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+		  </div>
+		  <!-- 24 -->
+		  <div class="tile_conteiner">
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+		  </div>
+		  <!-- 25 -->
+		  <div class="tile_conteiner">
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+		  </div>
+		  <!-- 26 -->
+		  <div class="tile_conteiner">
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+		  </div>
+		  <!-- 27 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+		  </div>
+		  <!-- 28 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+		  </div>
+		  <!-- 29 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+		  </div>
+		  <!-- 30 -->
+		  <div class="tile_conteiner">
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+		  </div>
+		  <!-- 31 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+		  </div>
+		  <!-- 32 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+		  </div>
+		  <!-- 33 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+		  </div>
+		  <!-- 34 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+		  </div>
+		  <!-- 35 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+		  </div>
+		  <!-- 36 -->
+		   <div class="tile_conteiner">
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+		  </div>
+		  <!-- 37 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+		  </div>
+		  <!-- 38 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+		  </div>
+		  <!-- 39 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+		  </div>
+		  <!-- 40 -->
+		  <div class="tile_conteiner">
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+			<div class="tileW"></div>
+			<div class="tileW"></div>
+			<div class="tile"></div>
+			<div class="tile"></div>
+		   </div>
+		</div>
+    </div>
+    <div class="cl"></div>
+    <h1>Инвентарь</h1>
+		<div class="inventory-box"><div class="inventory-box-img"></div><div class="inventory">
+		</div>
+	</div>
+		<script src="index.js"></script>
+  </body>
+</html>
